@@ -1,0 +1,6 @@
+Simple Prestashop PHPscript to fix random images ID when you upload products images.
+
+This script was creating to quickly resolve a prestashop theme bug : products images were suppose to change on hover but second image shown was missing.
+The main issue was the images ID was totally randomized when they was imported by CSV.
+
+To run the script, just put it in a custom folder on your FTP, change and adapt credentials and voilà :) 
