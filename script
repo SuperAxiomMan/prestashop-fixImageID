@@ -1,0 +1,47 @@
+<?php $dbhost = '127.0.0.1';
+$dbuser = 'dbuser';
+$dbpass = 'dbpass';
+$dbname = 'dbname';
+set_time_limit(0);
+$link = mysql_connect($dbhost, $dbuser, $dbpass);
+if (!$link)
+{
+    die('Could not connect: ' . mysql_error());
+}
+echo 'Connected successfully';
+mysql_close($link);
+mysql_connect($dbhost, $dbuser, $dbpass);
+mysql_select_db($dbname);
+$whereStart = 1;
+while ($whereStart <= 250000)
+{
+    $sql = mysql_query("SELECT id_product, id_image, position FROM ps_image WHERE id_product=$whereStart");
+    $tab = array();
+    $tablocator = 0;
+    $newPosition = 1;
+    $whereUpdate = 1;
+    while ($data = mysql_fetch_array($sql))
+    {
+        echo $data['id_product'] . " " . $data['id_image'] . " " . $data['position'] . "<br/>";
+        $tab[] = $data['id_image'];
+    }
+    $count = count($tab);
+    while ($count != 0)
+    {
+        $whereUpdate = $tab[$tablocator];
+        try
+        {
+            mysql_query("UPDATE ps_image SET position=$newPosition WHERE id_image=$whereUpdate");
+            echo "Update OK!!!";
+        }
+        catch(Exception $e)
+        {
+            echo $e->getMessage();
+        }
+        $tablocator++;
+        $newPosition++;
+        $count--;
+    }
+    $whereStart++;
+}
+mysql_close(); ?>
